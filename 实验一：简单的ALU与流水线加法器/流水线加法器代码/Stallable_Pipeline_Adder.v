@@ -19,29 +19,29 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-//´ø×èÈûµÄËÄ¼¶Á÷Ë®Ïß32-bit¼Ó·¨Æ÷,Ã¿Ò»¼¶½øĞĞ8-bit¼Ó·¨ÔËËã
+//å¸¦é˜»å¡çš„å››çº§æµæ°´çº¿32-bitåŠ æ³•å™¨,æ¯ä¸€çº§è¿›è¡Œ8-bitåŠ æ³•è¿ç®—
 module Stallable_Pipeline_Adder(
     input clk,
-    input [3:0] rst,   //Á÷Ë®ÏßË¢ĞÂĞÅºÅ£ºÖÃ0Ë¢ĞÂ
-    input [3:0] stop,  //Á÷Ë®ÏßÔİÍ£ĞÅºÅ£ºÖÃ0ÔİÍ£
-    input [31:0] data1,  //µÚÒ»²Ù×÷Êı
-    input [31:0] data2,  //µÚ¶ş²Ù×÷Êı
-    input cin,  //ÊäÈë½øÎ»ĞÅºÅ
+    input [3:0] rst,   //æµæ°´çº¿åˆ·æ–°ä¿¡å·ï¼šç½®0åˆ·æ–°
+    input [3:0] stop,  //æµæ°´çº¿æš‚åœä¿¡å·ï¼šç½®0æš‚åœ
+    input [31:0] data1,  //ç¬¬ä¸€æ“ä½œæ•°
+    input [31:0] data2,  //ç¬¬äºŒæ“ä½œæ•°
+    input cin,  //è¾“å…¥è¿›ä½ä¿¡å·
     
-    input valid_in,   //ÊäÈëdata1Óëdata2ÊÇ·ñÓĞĞ§£¬Ä¬ÈÏÖÃ1
-    input out_allow,  //Êä³öresÊÇ·ñ¿ÉÒÔ½ÓÊÕÊı¾İ£¬Ä¬ÈÏÖÃ1
+    input valid_in,   //è¾“å…¥data1ä¸data2æ˜¯å¦æœ‰æ•ˆï¼Œé»˜è®¤ç½®1
+    input out_allow,  //è¾“å‡ºresæ˜¯å¦å¯ä»¥æ¥æ”¶æ•°æ®ï¼Œé»˜è®¤ç½®1
     
-    output [31:0] res,  //Êä³ö
-    output cout,        //Êä³ö½øÎ»ĞÅºÅ
-    output valid_out    //Êä³öresÊÇ·ñÓĞĞ§
+    output [31:0] res,  //è¾“å‡º
+    output cout,        //è¾“å‡ºè¿›ä½ä¿¡å·
+    output valid_out    //è¾“å‡ºresæ˜¯å¦æœ‰æ•ˆ
     );
     
-    //--------------------Á÷Ë®Ïß¸÷¼¶ĞÅºÅÉùÃ÷£¬ÓÃÓÚ×èÈû--------------------//
+    //--------------------æµæ°´çº¿å„çº§ä¿¡å·å£°æ˜ï¼Œç”¨äºé˜»å¡--------------------//
     
-    reg pipe1_valid;      //µ±Ç°pipe1_dataÊÇ·ñÓĞĞ§£¬0±íÊ¾±¾¼¶Á÷Ë®ÏßÎª¿Õ
-    wire pipe1_allow_in;  //pipe1ÄÜ·ñ½ÓÊÕÊı¾İ
-    wire pipe1_ready_go;  //pipe1ÄÜ·ñ½«Êı¾İ´«¸øÏÂÒ»¼¶
-    wire pipe1_to_pipe2_valid;  //pipe2½«Òª½ÓÊÕµÄÊı¾İµÄÓĞĞ§ĞÔ
+    reg pipe1_valid;      //å½“å‰pipe1_dataæ˜¯å¦æœ‰æ•ˆï¼Œ0è¡¨ç¤ºæœ¬çº§æµæ°´çº¿ä¸ºç©º
+    wire pipe1_allow_in;  //pipe1èƒ½å¦æ¥æ”¶æ•°æ®
+    wire pipe1_ready_go;  //pipe1èƒ½å¦å°†æ•°æ®ä¼ ç»™ä¸‹ä¸€çº§
+    wire pipe1_to_pipe2_valid;  //pipe2å°†è¦æ¥æ”¶çš„æ•°æ®çš„æœ‰æ•ˆæ€§
 
     reg pipe2_valid;      
     wire pipe2_allow_in;
@@ -57,11 +57,11 @@ module Stallable_Pipeline_Adder(
     wire pipe4_allow_in;
     wire pipe4_ready_go;
     
-    //--------------------Á÷Ë®Ïß¸÷¼¶¼Ä´æÆ÷ÉùÃ÷£¬ÓÃÓÚ´æ´¢²Ù×÷Êı--------------------//
+    //--------------------æµæ°´çº¿å„çº§å¯„å­˜å™¨å£°æ˜ï¼Œç”¨äºå­˜å‚¨æ“ä½œæ•°åŠè¿ç®—ç»“æœ--------------------//
 
-    reg [7:0] pipe1_data_7to0;  //´¢´æµÍ8Î»ÔËËã½á¹û
-    reg [7:0] pipe1_data1_15to8;  //´¢´æµÚÒ»¸ö²Ù×÷Êı[15:8]Î»
-    reg [7:0] pipe1_data2_15to8;  //´¢´æµÚ¶ş¸ö²Ù×÷Êı[15:8]Î»
+    reg [7:0] pipe1_data_7to0;  //å‚¨å­˜ä½8ä½è¿ç®—ç»“æœ
+    reg [7:0] pipe1_data1_15to8;  //å‚¨å­˜ç¬¬ä¸€ä¸ªæ“ä½œæ•°[15:8]ä½
+    reg [7:0] pipe1_data2_15to8;  //å‚¨å­˜ç¬¬äºŒä¸ªæ“ä½œæ•°[15:8]ä½
     reg [7:0] pipe1_data1_23to16;
     reg [7:0] pipe1_data2_23to16;
     reg [7:0] pipe1_data1_31to24;
@@ -89,25 +89,25 @@ module Stallable_Pipeline_Adder(
     reg [7:0] pipe4_data_31to24;
     reg pipe4_c;
     
-    //--------------------Á÷Ë®ÏßÊµÏÖ--------------------//
+    //--------------------æµæ°´çº¿å®ç°--------------------//
     
-    //µÚÒ»¼¶Á÷Ë®Ïß
-    assign pipe1_ready_go = stop[0];  //pipe1ÄÜ·ñ½«Êı¾İ´«¸øÏÂÒ»¼¶
-    assign pipe1_allow_in = !pipe1_valid || pipe1_ready_go && pipe2_allow_in;  //pipe1ÄÜ·ñ½ÓÊÕÊı¾İ£º(1).pipe1ÄÜ½«µ±Ç°ÓĞĞ§Êı¾İ´«¸øpipe2 + pipe2ÄÜ¹»½ÓÊÕ¡£(2).pipe1Îª¿Õ + pipe2ÄÜ¹»½ÓÊÕ¡£
-    assign pipe1_to_pipe2_valid = pipe1_valid && pipe1_ready_go;  //pipe2½«Òª½ÓÊÕµÄÊı¾İµÄÓĞĞ§ĞÔ
+    //ç¬¬ä¸€çº§æµæ°´çº¿
+    assign pipe1_ready_go = stop[0];  //pipe1èƒ½å¦å°†æ•°æ®ä¼ ç»™ä¸‹ä¸€çº§
+    assign pipe1_allow_in = !pipe1_valid || pipe1_ready_go && pipe2_allow_in;  //pipe1èƒ½å¦æ¥æ”¶æ•°æ®ï¼š(1).pipe1èƒ½å°†å½“å‰æœ‰æ•ˆæ•°æ®ä¼ ç»™pipe2 + pipe2èƒ½å¤Ÿæ¥æ”¶ã€‚(2).pipe1ä¸ºç©º + pipe2èƒ½å¤Ÿæ¥æ”¶ã€‚
+    assign pipe1_to_pipe2_valid = pipe1_valid && pipe1_ready_go;  //pipe2å°†è¦æ¥æ”¶çš„æ•°æ®çš„æœ‰æ•ˆæ€§
     
     always @ (posedge clk) begin
-        //Çå¿ÕÁ÷Ë®Ïß
+        //æ¸…ç©ºæµæ°´çº¿
         if(!rst[0]) begin
             pipe1_valid <= 1'b0;
         end
         
-        //Ö»Òª±¾¼¶ÄÜ¹»½ÓÊÕÊı¾İ£¬¾ÍÒª¸üĞÂ±¾¼¶µÄvalid
+        //åªè¦æœ¬çº§èƒ½å¤Ÿæ¥æ”¶æ•°æ®ï¼Œå°±è¦æ›´æ–°æœ¬çº§çš„valid
         else if(pipe1_allow_in) begin
             pipe1_valid <= valid_in;
         end
         
-        //Èç¹û½«Òª½ÓÊÕµÄÊı¾İÓĞĞ§£¬ÇÒ±¾¼¶ÄÜ¹»½ÓÊÕ£¬Ôò¶ÁÈëÊı¾İ
+        //å¦‚æœå°†è¦æ¥æ”¶çš„æ•°æ®æœ‰æ•ˆï¼Œä¸”æœ¬çº§èƒ½å¤Ÿæ¥æ”¶ï¼Œåˆ™è¯»å…¥æ•°æ®
         if(valid_in && pipe1_allow_in) begin
             {pipe1_c, pipe1_data_7to0} <= {1'b0, data1[7:0]} + {1'b0, data2[7:0]} + cin;
             {pipe1_data1_15to8, pipe1_data2_15to8} <= {data1[15:8], data2[15:8]};
@@ -115,10 +115,10 @@ module Stallable_Pipeline_Adder(
             {pipe1_data1_31to24, pipe1_data2_31to24} <= {data1[31:24], data2[31:24]};
         end
         
-        //Èç¹û±¾¼¶²»ÄÜ¹»½ÓÊÕÊı¾İ£¬ËµÃ÷×èÈû·¢Éú£¬±¾¼¶valid±£³Ö²»±ä
+        //å¦‚æœæœ¬çº§ä¸èƒ½å¤Ÿæ¥æ”¶æ•°æ®ï¼Œè¯´æ˜é˜»å¡å‘ç”Ÿï¼Œæœ¬çº§validä¿æŒä¸å˜
     end
     
-    //µÚ¶ş¼¶Á÷Ë®Ïß
+    //ç¬¬äºŒçº§æµæ°´çº¿
     assign pipe2_ready_go = stop[1];
     assign pipe2_allow_in = !pipe2_valid || pipe2_ready_go && pipe3_allow_in;
     assign pipe2_to_pipe3_valid = pipe2_valid && pipe2_ready_go;
@@ -129,10 +129,10 @@ module Stallable_Pipeline_Adder(
         end
         
         else if(pipe2_allow_in) begin
-            pipe2_valid <= pipe1_to_pipe2_valid;  //ÕâÀï²»ÓÃpipe1_validµÄÔ­ÒòÍ¬ÉÏ
+            pipe2_valid <= pipe1_to_pipe2_valid;  //è¿™é‡Œä¸ç”¨pipe1_validçš„åŸå› åŒä¸Š
         end  
         
-        if(pipe1_to_pipe2_valid && pipe2_allow_in) begin  //Q£ºÎªÊ²Ã´Ìõ¼ş²»ÊÇpipe1_valid£¿A£ºÓĞ¿ÉÄÜpipe1Êı¾İÓĞĞ§µ«ÎŞ·¨´«¸øpipe2
+        if(pipe1_to_pipe2_valid && pipe2_allow_in) begin  //Qï¼šä¸ºä»€ä¹ˆæ¡ä»¶ä¸æ˜¯pipe1_validï¼ŸAï¼šæœ‰å¯èƒ½pipe1æ•°æ®æœ‰æ•ˆä½†æ— æ³•ä¼ ç»™pipe2
             pipe2_data_7to0 <= pipe1_data_7to0;
             {pipe2_c, pipe2_data_15to8} <= {1'b0, pipe1_data1_15to8} + {1'b0, pipe1_data2_15to8} + pipe1_c;
             {pipe2_data1_23to16, pipe2_data2_23to16} <= {pipe1_data1_23to16, pipe1_data2_23to16};
@@ -140,7 +140,7 @@ module Stallable_Pipeline_Adder(
         end
     end
     
-    //µÚÈı¼¶Á÷Ë®Ïß
+    //ç¬¬ä¸‰çº§æµæ°´çº¿
     assign pipe3_ready_go = stop[2];
     assign pipe3_allow_in = !pipe3_valid || pipe3_ready_go && pipe4_allow_in;
     assign pipe3_to_pipe4_valid = pipe3_valid && pipe3_ready_go;
@@ -162,7 +162,7 @@ module Stallable_Pipeline_Adder(
         end
     end
     
-    //µÚËÄ¼¶Á÷Ë®Ïß
+    //ç¬¬å››çº§æµæ°´çº¿
     assign pipe4_ready_go = stop[3];
     assign pipe4_allow_in = !pipe4_valid || pipe4_ready_go && out_allow;
     assign valid_out = pipe4_valid && pipe4_ready_go;
@@ -184,7 +184,7 @@ module Stallable_Pipeline_Adder(
         end
     end
     
-    //Êä³ö
+    //è¾“å‡º
     assign res = {pipe4_data_31to24, pipe4_data_23to16, pipe4_data_15to8, pipe4_data_7to0};
     assign cout = pipe4_c;
     
