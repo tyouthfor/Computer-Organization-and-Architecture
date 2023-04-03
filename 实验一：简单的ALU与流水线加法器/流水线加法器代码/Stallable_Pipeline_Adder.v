@@ -115,7 +115,7 @@ module Stallable_Pipeline_Adder(
             {pipe1_data1_31to24, pipe1_data2_31to24} <= {data1[31:24], data2[31:24]};
         end
         
-        //如果本级不能够接收数据，说明阻塞发生，本级valid保持不变
+        //如果本级不能够接收数据，说明阻塞发生，本级数据及valid保持不变
     end
     
     //第二级流水线
