@@ -129,10 +129,10 @@ module Stallable_Pipeline_Adder(
         end
         
         else if(pipe2_allow_in) begin
-            pipe2_valid <= pipe1_to_pipe2_valid;  //这里不用pipe1_valid的原因同上
+            pipe2_valid <= pipe1_to_pipe2_valid;  //Q：为什么不用pipe1_valid？A：有可能pipe1数据有效但无法传给pipe2
         end  
         
-        if(pipe1_to_pipe2_valid && pipe2_allow_in) begin  //Q：为什么条件不是pipe1_valid？A：有可能pipe1数据有效但无法传给pipe2
+        if(pipe1_to_pipe2_valid && pipe2_allow_in) begin  //这里用pipe1_to_pipe2_valid而不用pipe1_valid的原因同上
             pipe2_data_7to0 <= pipe1_data_7to0;
             {pipe2_c, pipe2_data_15to8} <= {1'b0, pipe1_data1_15to8} + {1'b0, pipe1_data2_15to8} + pipe1_c;
             {pipe2_data1_23to16, pipe2_data2_23to16} <= {pipe1_data1_23to16, pipe1_data2_23to16};
