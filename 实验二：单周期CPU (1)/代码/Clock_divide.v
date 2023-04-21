@@ -19,14 +19,14 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-// Ê±ÖÓ·ÖÆµ
+// æ—¶é’Ÿåˆ†é¢‘
 module Clock_divide(
     input clk,
     output reg clk_div
     );
 
-    parameter frequency = 100_000000;  //ÏµÍ³Ê±ÖÓÆµÂÊ£º100Mhz£¬·ÖÆµºóÊ±ÖÓÖÜÆÚÎª2s
-    integer cnt;  //¼ÆÊı
+    parameter frequency = 100_000000;  //ç³»ç»Ÿæ—¶é’Ÿé¢‘ç‡ï¼š100Mhzï¼Œåˆ†é¢‘åæ—¶é’Ÿå‘¨æœŸï¼š2s
+    integer cnt;  //è®¡æ•°
     
     always @ (posedge clk) begin
         if(cnt == frequency) begin
