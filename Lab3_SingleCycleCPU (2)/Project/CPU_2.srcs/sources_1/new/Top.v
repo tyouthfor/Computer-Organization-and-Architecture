@@ -1,41 +1,41 @@
 `timescale 1ns / 1ps
 
 //************************************************************************
-//          Ä£¿éÃû³Æ£ºTop
-//          Ä£¿é¹¦ÄÜ£º¶¥²ãÄ£¿é£¬Á¬½ÓÁËMIPSÈíºËÓë Memory
+//          æ¨¡å—åç§°ï¼šTop
+//          æ¨¡å—åŠŸèƒ½ï¼šé¡¶å±‚æ¨¡å—ï¼Œè¿æ¥äº†MIPSè½¯æ ¸ä¸ Memory
 //************************************************************************
 module Top(
-	input clk,
-	input rst,
-	
-	output [31:0] ALU_result,
-	output [31:0] write_data_memory,
-	output MemWrite
+    input clk,
+    input rst,
+
+    output [31:0] ALU_result,
+    output [31:0] write_data_memory,
+    output MemWrite
     );
 
-	// Memory µÄI/O¶Ë¿Ú
-	wire [31:0] curr_instruction_addr;  // Instruction Memory µÄÊäÈë£ºPC
-	wire instruction_en;                // Instruction Memory µÄÊäÈë£ºPCµØÖ·ÊÇ·ñÓĞĞ§
-    wire [31:0] instruction;            // Instruction Memory µÄÊä³ö£º´Ó´æ´¢Æ÷ÖĞ¶Á³öµÄÖ¸Áî
+    // Memory çš„I/Oç«¯å£
+    wire [31:0] curr_instruction_addr;  // Instruction Memory çš„è¾“å…¥ï¼šPC
+    wire instruction_en;                // Instruction Memory çš„è¾“å…¥ï¼šPCåœ°å€æ˜¯å¦æœ‰æ•ˆ
+    wire [31:0] instruction;            // Instruction Memory çš„è¾“å‡ºï¼šä»å­˜å‚¨å™¨ä¸­è¯»å‡ºçš„æŒ‡ä»¤
 	
-//    wire [31:0] ALU_result;         // Data Memory µÄÊäÈë£ºALUµÄÔËËã½á¹û£¬¿ÉÄÜÊÇÄ¿±êµØÖ·
-//    wire [31:0] write_data_memory;  // Data Memory µÄÊäÈë£ºĞ´Èë´æ´¢Æ÷µÄÊı¾İ
-//    wire MemWrite;                  // Data Memory µÄÊäÈë£ºĞ´¿ØÖÆĞÅºÅ
-    wire MemRead;                   // Data Memory µÄÊäÈë£º¶Á¿ØÖÆĞÅºÅ£¨²¢Î´ÓÃµ½£¬ÒòÎªµ¥¶Ë¿ÚRAM IPºËµÄenaĞÅºÅ²¢²»ÊÇ¶Á¿ØÖÆĞÅºÅ£¬¶øÊÇÕû¸öµÄÊ¹ÄÜĞÅºÅ£©
-    wire [31:0] read_data_memory;   // Data Memory µÄÊä³ö£º´Ó´æ´¢Æ÷ÖĞ¶Á³öµÄÊı¾İ
+//    wire [31:0] ALU_result;         // Data Memory çš„è¾“å…¥ï¼šALUçš„è¿ç®—ç»“æœï¼Œå¯èƒ½æ˜¯ç›®æ ‡åœ°å€
+//    wire [31:0] write_data_memory;  // Data Memory çš„è¾“å…¥ï¼šå†™å…¥å­˜å‚¨å™¨çš„æ•°æ®
+//    wire MemWrite;                  // Data Memory çš„è¾“å…¥ï¼šå†™æ§åˆ¶ä¿¡å·
+    wire MemRead;                   // Data Memory çš„è¾“å…¥ï¼šè¯»æ§åˆ¶ä¿¡å·ï¼ˆå¹¶æœªç”¨åˆ°ï¼Œå› ä¸ºå•ç«¯å£RAM IPæ ¸çš„enaä¿¡å·å¹¶ä¸æ˜¯è¯»æ§åˆ¶ä¿¡å·ï¼Œè€Œæ˜¯æ•´ä¸ªçš„ä½¿èƒ½ä¿¡å·ï¼‰
+    wire [31:0] read_data_memory;   // Data Memory çš„è¾“å‡ºï¼šä»å­˜å‚¨å™¨ä¸­è¯»å‡ºçš„æ•°æ®
 
-    // MIPS ÈíºË
-	MIPS MIPS 
-	(
-	.clk(clk), .rst(rst),
-	.curr_instruction_addr(curr_instruction_addr), .instruction_en(instruction_en), .instruction(instruction),
-	.ALU_result(ALU_result), .write_data_memory(write_data_memory), .MemWrite(MemWrite), .MemRead(MemRead), .read_data_memory(read_data_memory)
-	);
-	
-	// Instruction Memory
-	instruction_memory IM (.clka(clk), .ena(instruction_en), .addra(curr_instruction_addr), .douta(instruction));
-	
-	// Data Memory
-	data_memory DM (.clka(clk), .ena(1'b1), .wea({4{MemWrite}}), .addra(ALU_result), .dina(write_data_memory), .douta(read_data_memory));
+    // MIPS è½¯æ ¸
+    MIPS MIPS 
+    (
+    .clk(clk), .rst(rst),
+    .curr_instruction_addr(curr_instruction_addr), .instruction_en(instruction_en), .instruction(instruction),
+    .ALU_result(ALU_result), .write_data_memory(write_data_memory), .MemWrite(MemWrite), .MemRead(MemRead), .read_data_memory(read_data_memory)
+    );
+
+    // Instruction Memory
+    instruction_memory IM (.clka(clk), .ena(instruction_en), .addra(curr_instruction_addr), .douta(instruction));
+
+    // Data Memory
+    data_memory DM (.clka(clk), .ena(1'b1), .wea({4{MemWrite}}), .addra(ALU_result), .dina(write_data_memory), .douta(read_data_memory));
 	
 endmodule
