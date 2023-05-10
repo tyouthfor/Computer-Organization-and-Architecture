@@ -1,15 +1,15 @@
 `timescale 1ns / 1ps
 
 //*********************************************************
-//                Ä£¿éÃû³Æ£ºSHift_Left_2
-//                Ä£¿é¹¦ÄÜ£º×óÒÆ2Î»
+//                æ¨¡å—åç§°ï¼šSHift_Left_2
+//                æ¨¡å—åŠŸèƒ½ï¼šå·¦ç§»2ä½
 //*********************************************************
 module Shift_Left_2 #(parameter DATA_WIDTH = 32)(
-	input [DATA_WIDTH - 1 : 0] x,
-	
-	output [DATA_WIDTH - 1 : 0] y
+    input [DATA_WIDTH - 1 : 0] x,
+
+    output [DATA_WIDTH - 1 : 0] y
     );
 
-	assign y = {x[DATA_WIDTH - 3 : 0], 2'b00};
+    assign y = {x[DATA_WIDTH - 3 : 0], 2'b00};
 
 endmodule
