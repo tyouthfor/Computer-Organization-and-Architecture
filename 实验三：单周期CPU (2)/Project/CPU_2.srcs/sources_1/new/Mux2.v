@@ -1,17 +1,17 @@
 `timescale 1ns / 1ps
 
 //*********************************************************
-//                Ä£¿éÃû³Æ£ºMux2
-//                Ä£¿é¹¦ÄÜ£º¶şÑ¡Ò»¶àÂ·Ñ¡ÔñÆ÷
+//                æ¨¡å—åç§°ï¼šMux2
+//                æ¨¡å—åŠŸèƒ½ï¼šäºŒé€‰ä¸€å¤šè·¯é€‰æ‹©å™¨
 //*********************************************************
 module Mux2 #(parameter DATA_WIDTH = 8)(
-	input [DATA_WIDTH - 1 : 0] d0,
-	input [DATA_WIDTH - 1 : 0] d1,
-	input sel,
+    input [DATA_WIDTH - 1 : 0] d0,
+    input [DATA_WIDTH - 1 : 0] d1,
+    input sel,
 	
-	output [DATA_WIDTH - 1 : 0] y
+    output [DATA_WIDTH - 1 : 0] y
     );
 	
-	assign y = sel ? d1 : d0;
+    assign y = sel ? d1 : d0;
 
 endmodule
