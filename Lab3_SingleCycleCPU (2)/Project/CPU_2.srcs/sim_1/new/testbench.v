@@ -21,11 +21,11 @@
 
 
 module testbench();
-	reg clk = 1'b1;
-	reg rst = 1'b1;
+    reg clk = 1'b1;
+    reg rst = 1'b1;
 
-	wire[31:0] writedata,dataadr;
-	wire memwrite;
+    wire[31:0] writedata,dataadr;
+    wire memwrite;
     Top top (.clk(clk), .rst(rst), .ALU_result(dataadr), .write_data_memory(writedata), .MemWrite(memwrite));
 
     initial begin
@@ -46,20 +46,20 @@ module testbench();
 
 //	end
 
-	always @(negedge clk) begin
-		if(memwrite) begin
-			/* code */
-			if(dataadr === 80 & writedata === 7) begin
-				/* code */
-				$display("Simulation succeeded");
-				$stop;
-			end 
-			else if(dataadr !== 80) begin
-				/* code */
-				$display("Simulation Failed");
-				$stop;
-			end
-		end
-	end
+    always @(negedge clk) begin
+        if(memwrite) begin
+	    /* code */
+	    if(dataadr === 80 & writedata === 7) begin
+		/* code */
+		$display("Simulation succeeded");
+		$stop;
+	    end 
+	    else if(dataadr !== 80) begin
+		/* code */
+		$display("Simulation Failed");
+		$stop;
+	    end
+        end
+    end
 	
 endmodule
