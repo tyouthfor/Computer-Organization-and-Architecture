@@ -1,56 +1,56 @@
 `timescale 1ns / 1ps
 
 //*********************************************************
-//      Ä£¿éÃû³Æ£ºMIPS
-//      Ä£¿é¹¦ÄÜ£ºMIPSÈíºË£¬Á¬½ÓÁËDatapath¡¢Controller
+//      æ¨¡å—åç§°ï¼šMIPS
+//      æ¨¡å—åŠŸèƒ½ï¼šMIPSè½¯æ ¸ï¼Œè¿æ¥äº†Datapathã€Controller
 //*********************************************************
 module MIPS(
-	input clk,
-	input rst,
+    input clk,
+    input rst,
 
-    // Memory µÄI/O¶Ë¿Ú
-    output [31:0] curr_instruction_addr,  // Instruction Memory µÄÊäÈë£ºPC
-    output instruction_en,                // Instruction Memory µÄÊäÈë£ºPCµØÖ·ÊÇ·ñÓĞĞ§
-    input [31:0] instruction,             // Instruction Memory µÄÊä³ö£º´Ó´æ´¢Æ÷ÖĞ¶Á³öµÄÖ¸Áî
+    // Memory çš„I/Oç«¯å£
+    output [31:0] curr_instruction_addr,  // Instruction Memory çš„è¾“å…¥ï¼šPC
+    output instruction_en,                // Instruction Memory çš„è¾“å…¥ï¼šPCåœ°å€æ˜¯å¦æœ‰æ•ˆ
+    input [31:0] instruction,             // Instruction Memory çš„è¾“å‡ºï¼šä»å­˜å‚¨å™¨ä¸­è¯»å‡ºçš„æŒ‡ä»¤
 	
-    output [31:0] ALU_result,         // Data Memory µÄÊäÈë£ºALUµÄÔËËã½á¹û£¬¿ÉÄÜÊÇÄ¿±êµØÖ·
-	output [31:0] write_data_memory,  // Data Memory µÄÊäÈë£ºĞ´Èë´æ´¢Æ÷µÄÊı¾İ
-    output MemWrite,                  // Data Memory µÄÊäÈë£ºĞ´¿ØÖÆĞÅºÅ
-    output MemRead,                   // Data Memory µÄÊäÈë£º¶Á¿ØÖÆĞÅºÅ
-    input [31:0] read_data_memory     // Data Memory µÄÊä³ö£º´Ó´æ´¢Æ÷ÖĞ¶Á³öµÄÊı¾İ
+    output [31:0] ALU_result,         // Data Memory çš„è¾“å…¥ï¼šALUçš„è¿ç®—ç»“æœï¼Œå¯èƒ½æ˜¯ç›®æ ‡åœ°å€
+    output [31:0] write_data_memory,  // Data Memory çš„è¾“å…¥ï¼šå†™å…¥å­˜å‚¨å™¨çš„æ•°æ®
+    output MemWrite,                  // Data Memory çš„è¾“å…¥ï¼šå†™æ§åˆ¶ä¿¡å·
+    output MemRead,                   // Data Memory çš„è¾“å…¥ï¼šè¯»æ§åˆ¶ä¿¡å·
+    input [31:0] read_data_memory     // Data Memory çš„è¾“å‡ºï¼šä»å­˜å‚¨å™¨ä¸­è¯»å‡ºçš„æ•°æ®
     );
 	
-	// Mux µÄ sel ĞÅºÅ
-	wire RegDst;
-	wire ALUSrc;
-	wire MemtoReg;
-	wire Branch;
-	wire Jump;
-	
-	// ¶ÁĞ´¿ØÖÆĞÅºÅ
-	wire RegWrite;
+    // Mux çš„ sel ä¿¡å·
+    wire RegDst;
+    wire ALUSrc;
+    wire MemtoReg;
+    wire Branch;
+    wire Jump;
 
-	// ALU¿ØÖÆĞÅºÅ
-	wire [2:0] ALUControl;
+    // è¯»å†™æ§åˆ¶ä¿¡å·
+    wire RegWrite;
+
+    // ALUæ§åˆ¶ä¿¡å·
+    wire [2:0] ALUControl;
 
     // Controller
-	Controller Controller
-	(
-    .op(instruction[31:26]), .funct(instruction[5:0]),  // ÊäÈë£ºÖ¸Áî
-    .RegDst(RegDst), .ALUSrc(ALUSrc), .MemtoReg(MemtoReg), .Branch(Branch), .Jump(Jump),  // Êä³ö£ºMux µÄ sel ĞÅºÅ
-    .MemRead(MemRead), .MemWrite(MemWrite), .RegWrite(RegWrite),  // Êä³ö£º¶ÁĞ´¿ØÖÆĞÅºÅ
-    .ALUControl(ALUControl)  // Êä³ö£ºALU¿ØÖÆĞÅºÅ
+    Controller Controller
+    (
+    .op(instruction[31:26]), .funct(instruction[5:0]),  // è¾“å…¥ï¼šæŒ‡ä»¤
+    .RegDst(RegDst), .ALUSrc(ALUSrc), .MemtoReg(MemtoReg), .Branch(Branch), .Jump(Jump),  // è¾“å‡ºï¼šMux çš„ sel ä¿¡å·
+    .MemRead(MemRead), .MemWrite(MemWrite), .RegWrite(RegWrite),  // è¾“å‡ºï¼šè¯»å†™æ§åˆ¶ä¿¡å·
+    .ALUControl(ALUControl)  // è¾“å‡ºï¼šALUæ§åˆ¶ä¿¡å·
     );
-	
-	// Datapath
-	Datapath Datapath
-	(
-	.clk(clk), .rst(rst),
-	.RegDst(RegDst), .ALUSrc(ALUSrc), .MemtoReg(MemtoReg), .Branch(Branch), .Jump(Jump),  // ÊäÈë£ºMux µÄ sel ĞÅºÅ
-	.RegWrite(RegWrite),  // ÊäÈë£º¶ÁĞ´¿ØÖÆĞÅºÅ
-	.ALUControl(ALUControl),  // ÊäÈë£ºALU¿ØÖÆĞÅºÅ
-	.curr_instruction_addr(curr_instruction_addr), .instruction_en(instruction_en), .instruction(instruction),  // Instruction Memory µÄI/O¶Ë¿Ú
-	.ALU_result(ALU_result), .write_data_memory(write_data_memory), .MemWrite(MemWrite), .MemRead(MemRead), .read_data_memory(read_data_memory)  // Data Memory µÄI/O¶Ë¿Ú
-	);
+
+    // Datapath
+    Datapath Datapath
+    (
+    .clk(clk), .rst(rst),
+    .RegDst(RegDst), .ALUSrc(ALUSrc), .MemtoReg(MemtoReg), .Branch(Branch), .Jump(Jump),  // è¾“å…¥ï¼šMux çš„ sel ä¿¡å·
+    .RegWrite(RegWrite),  // è¾“å…¥ï¼šè¯»å†™æ§åˆ¶ä¿¡å·
+    .ALUControl(ALUControl),  // è¾“å…¥ï¼šALUæ§åˆ¶ä¿¡å·
+    .curr_instruction_addr(curr_instruction_addr), .instruction_en(instruction_en), .instruction(instruction),  // Instruction Memory çš„I/Oç«¯å£
+    .ALU_result(ALU_result), .write_data_memory(write_data_memory), .MemWrite(MemWrite), .MemRead(MemRead), .read_data_memory(read_data_memory)  // Data Memory çš„I/Oç«¯å£
+    );
 	
 endmodule
