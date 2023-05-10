@@ -1,32 +1,32 @@
 `timescale 1ns / 1ps
 
 //*********************************************************
-//            Ä£¿éÃû³Æ£ºGeneral_Regfile
-//            Ä£¿é¹¦ÄÜ£ºMIPSµÄ32¸ö32Î»Í¨ÓÃ¼Ä´æÆ÷
+//            æ¨¡å—åç§°ï¼šGeneral_Regfile
+//            æ¨¡å—åŠŸèƒ½ï¼šMIPSçš„32ä¸ª32ä½é€šç”¨å¯„å­˜å™¨
 //*********************************************************
 module General_Regfile(
-	input clk,
-	input [4:0] read_reg1,    // ¶Á¼Ä´æÆ÷ºÅ1
-	input [4:0] read_reg2,    // ¶Á¼Ä´æÆ÷ºÅ2
-	input [4:0] write_reg,    // Ğ´¼Ä´æÆ÷ºÅ
-	input [31:0] write_data,  // Ğ´Êı¾İ
-	input RegWrite,  		  // Ğ´¿ØÖÆĞÅºÅ
+    input clk,
+    input [4:0] read_reg1,    // è¯»å¯„å­˜å™¨å·1
+    input [4:0] read_reg2,    // è¯»å¯„å­˜å™¨å·2
+    input [4:0] write_reg,    // å†™å¯„å­˜å™¨å·
+    input [31:0] write_data,  // å†™æ•°æ®
+    input RegWrite,           // å†™æ§åˆ¶ä¿¡å·
 
-	output [31:0] read_data1, // ´Ó¼Ä´æÆ÷ºÅ1ÖĞ¶Á³öµÄÊı¾İ
-	output [31:0] read_data2  // ´Ó¼Ä´æÆ÷ºÅ2ÖĞ¶Á³öµÄÊı¾İ
+    output [31:0] read_data1, // ä»å¯„å­˜å™¨å·1ä¸­è¯»å‡ºçš„æ•°æ®
+    output [31:0] read_data2  // ä»å¯„å­˜å™¨å·2ä¸­è¯»å‡ºçš„æ•°æ®
     );
 
-	reg [31:0] rf[31:0];  // ¼Ä´æÆ÷¶Ñ
+    reg [31:0] rf[31:0];  // å¯„å­˜å™¨å †
 
-	// 1.Ğ´Êı¾İ
-	always @ (posedge clk) begin
-		if (RegWrite) begin
-			rf[write_reg] <= write_data;
-		end
+    // 1.å†™æ•°æ®
+    always @ (posedge clk) begin
+	if (RegWrite) begin
+	    rf[write_reg] <= write_data;
 	end
+    end
 
-	// 2.¶ÁÊı¾İ
-	assign read_data1 = (read_reg1 != 0) ? rf[read_reg1] : 0;
-	assign read_data2 = (read_reg2 != 0) ? rf[read_reg2] : 0;
+    // 2.è¯»æ•°æ®
+    assign read_data1 = (read_reg1 != 0) ? rf[read_reg1] : 0;
+    assign read_data2 = (read_reg2 != 0) ? rf[read_reg2] : 0;
 
 endmodule
