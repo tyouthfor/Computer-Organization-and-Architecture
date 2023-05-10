@@ -1,59 +1,59 @@
 `timescale 1ns / 1ps
 
 //*********************************************************
-//              Ä£¿éÃû³Æ£ºDatapath
-//              Ä£¿é¹¦ÄÜ£º´¦ÀíÆ÷µÄÊı¾İÍ¨Â·µ¥Ôª
+//              æ¨¡å—åç§°ï¼šDatapath
+//              æ¨¡å—åŠŸèƒ½ï¼šå¤„ç†å™¨çš„æ•°æ®é€šè·¯å•å…ƒ
 //*********************************************************
 module Datapath(
-	input clk,
+    input clk,
     input rst,
 
-    // Mux µÄ sel ĞÅºÅ
-	input RegDst,
-	input ALUSrc,
-	input MemtoReg,
-	input Branch,
-	input Jump,
-	
-	// ¶ÁĞ´¿ØÖÆĞÅºÅ
-	input RegWrite,
+    // Mux çš„ sel ä¿¡å·
+    input RegDst,
+    input ALUSrc,
+    input MemtoReg,
+    input Branch,
+    input Jump,
 
-	// ALU¿ØÖÆĞÅºÅ
-	input [2:0] ALUControl,
+    // è¯»å†™æ§åˆ¶ä¿¡å·
+    input RegWrite,
 
-    // Memory µÄI/O¶Ë¿Ú
-    output [31:0] curr_instruction_addr,  // Instruction Memory µÄÊäÈë£ºPC
-    output instruction_en,                // Instruction Memory µÄÊäÈë£ºPCµØÖ·ÊÇ·ñÓĞĞ§
-    input [31:0] instruction,             // Instruction Memory µÄÊä³ö£º´Ó´æ´¢Æ÷ÖĞ¶Á³öµÄÖ¸Áî
+    // ALUæ§åˆ¶ä¿¡å·
+    input [2:0] ALUControl,
+
+    // Memory çš„I/Oç«¯å£
+    output [31:0] curr_instruction_addr,  // Instruction Memory çš„è¾“å…¥ï¼šPC
+    output instruction_en,                // Instruction Memory çš„è¾“å…¥ï¼šPCåœ°å€æ˜¯å¦æœ‰æ•ˆ
+    input [31:0] instruction,             // Instruction Memory çš„è¾“å‡ºï¼šä»å­˜å‚¨å™¨ä¸­è¯»å‡ºçš„æŒ‡ä»¤
 	
-    output [31:0] ALU_result,         // Data Memory µÄÊäÈë£ºALUµÄÔËËã½á¹û£¬¿ÉÄÜÊÇÄ¿±êµØÖ·
-	output [31:0] write_data_memory,  // Data Memory µÄÊäÈë£ºĞ´Èë´æ´¢Æ÷µÄÊı¾İ
-    output MemWrite,                  // Data Memory µÄÊäÈë£ºĞ´¿ØÖÆĞÅºÅ
-    output MemRead,                   // Data Memory µÄÊäÈë£º¶Á¿ØÖÆĞÅºÅ
-    input [31:0] read_data_memory     // Data Memory µÄÊä³ö£º´Ó´æ´¢Æ÷ÖĞ¶Á³öµÄÊı¾İ
+    output [31:0] ALU_result,         // Data Memory çš„è¾“å…¥ï¼šALUçš„è¿ç®—ç»“æœï¼Œå¯èƒ½æ˜¯ç›®æ ‡åœ°å€
+    output [31:0] write_data_memory,  // Data Memory çš„è¾“å…¥ï¼šå†™å…¥å­˜å‚¨å™¨çš„æ•°æ®
+    output MemWrite,                  // Data Memory çš„è¾“å…¥ï¼šå†™æ§åˆ¶ä¿¡å·
+    output MemRead,                   // Data Memory çš„è¾“å…¥ï¼šè¯»æ§åˆ¶ä¿¡å·
+    input [31:0] read_data_memory     // Data Memory çš„è¾“å‡ºï¼šä»å­˜å‚¨å™¨ä¸­è¯»å‡ºçš„æ•°æ®
     );
 	
     //********************************************************************************
-    //                                 1.PCÄ£¿é
+    //                                 1.PCæ¨¡å—
     //********************************************************************************
 
     // (1).PC
     wire [31:0] next_instruction_addr;
     PC PC (.clk(clk), .rst(rst), .cin(next_instruction_addr), .cout(curr_instruction_addr), .instruction_en(instruction_en));
 
-    // (2).PC×ÔÔö
+    // (2).PCè‡ªå¢
     wire [31:0] PC_increment_addr;
     Adder2 #32 PC_increment (.a(curr_instruction_addr), .b(32'h4), .c(PC_increment_addr));
     
     //********************************************************************************
-    //                               2.¼Ä´æÆ÷¶ÑÄ£¿é
+    //                               2.å¯„å­˜å™¨å †æ¨¡å—
     //********************************************************************************
 
-    // (1).RegDstĞÅºÅ¿ØÖÆµÄÑ¡ÔñÆ÷£¬Ñ¡Ôñ write register µÄÀ´Ô´
+    // (1).RegDstä¿¡å·æ§åˆ¶çš„é€‰æ‹©å™¨ï¼Œé€‰æ‹© write register çš„æ¥æº
     wire [4:0] write_reg;
     Mux2 #5 write_reg_from (.d0(instruction[20:16]), .d1(instruction[15:11]), .sel(RegDst), .y(write_reg));
 
-    // (2).¼Ä´æÆ÷¶Ñ
+    // (2).å¯„å­˜å™¨å †
     wire [31:0] write_data_reg;
     wire [31:0] read_data1_reg;
     wire [31:0] read_data2_reg;
@@ -67,53 +67,53 @@ module Datapath(
     assign write_data_memory = read_data2_reg;
 
     //********************************************************************************
-    //                                 3.ALUÄ£¿é
+    //                                 3.ALUæ¨¡å—
     //********************************************************************************
 
-    // (1).¶ÔÖ¸ÁîÖĞµÄÁ¢¼´Êı×÷·ûºÅÀ©Õ¹
+    // (1).å¯¹æŒ‡ä»¤ä¸­çš„ç«‹å³æ•°ä½œç¬¦å·æ‰©å±•
     wire [31:0] se_const;
     Sign_Extension se (.x(instruction[15:0]), .y(se_const));
 
-    // (2).ALUSrcĞÅºÅ¿ØÖÆµÄÑ¡ÔñÆ÷£¬Ñ¡ÔñALUµÄµÚ¶ş²Ù×÷ÊıµÄÀ´Ô´
+    // (2).ALUSrcä¿¡å·æ§åˆ¶çš„é€‰æ‹©å™¨ï¼Œé€‰æ‹©ALUçš„ç¬¬äºŒæ“ä½œæ•°çš„æ¥æº
     wire [31:0] second_operand;
     Mux2 #32 second_operand_from (.d0(read_data2_reg), .d1(se_const), .sel(ALUSrc), .y(second_operand));
 
-    // (3).ALUÄ£¿é
+    // (3).ALUæ¨¡å—
     wire zero;
     ALU ALU (.a(read_data1_reg), .b(second_operand), .op(ALUControl), .y(ALU_result), .zero(zero));
 
     //********************************************************************************
-    //                              4.WB£¨Ğ´»Ø£©Ä£¿é
+    //                              4.WBï¼ˆå†™å›ï¼‰æ¨¡å—
     //********************************************************************************
 
-    // MemtoRegĞÅºÅ¿ØÖÆµÄÑ¡ÔñÆ÷£¬Ñ¡ÔñĞ´Èë¼Ä´æÆ÷¶ÑµÄÊı¾İµÄÀ´Ô´
+    // MemtoRegä¿¡å·æ§åˆ¶çš„é€‰æ‹©å™¨ï¼Œé€‰æ‹©å†™å…¥å¯„å­˜å™¨å †çš„æ•°æ®çš„æ¥æº
     Mux2 #32 write_data_from (.d0(ALU_result), .d1(read_data_memory), .sel(MemtoReg), .y(write_data_reg));
 
     //********************************************************************************
-    //                                5.BranchÄ£¿é
+    //                                5.Branchæ¨¡å—
     //********************************************************************************
 
-    // (1).¶ÔÖ¸ÁîÖĞµÄµØÖ·×÷·ûºÅÀ©Õ¹ºó×óÒÆÁ½Î»
+    // (1).å¯¹æŒ‡ä»¤ä¸­çš„åœ°å€ä½œç¬¦å·æ‰©å±•åå·¦ç§»ä¸¤ä½
     wire [31:0] relative_branch_addr;
     Shift_Left_2 #32 sl2_1 (.x(se_const), .y(relative_branch_addr));
 
-    // (2).PCÏà¶ÔÑ°Ö·
+    // (2).PCç›¸å¯¹å¯»å€
     wire [31:0] branch_addr;
     Adder2 #32 branch (.a(PC_increment_addr), .b(relative_branch_addr), .c(branch_addr));
 
-    // (3).Branch & zero ĞÅºÅ¿ØÖÆµÄÑ¡ÔñÆ÷£¬Ñ¡ÔñÏÂÒ»ÌõÖ¸ÁîµØÖ·µÄÀ´Ô´
+    // (3).Branch & zero ä¿¡å·æ§åˆ¶çš„é€‰æ‹©å™¨ï¼Œé€‰æ‹©ä¸‹ä¸€æ¡æŒ‡ä»¤åœ°å€çš„æ¥æº
     wire [31:0] temp_addr;
     Mux2 #32 branch_or_PC_increment (.d0(PC_increment_addr), .d1(branch_addr), .sel(Branch & zero), .y(temp_addr));
 
     //********************************************************************************
-    //                                6.JumpÄ£¿é
+    //                                6.Jumpæ¨¡å—
     //********************************************************************************
 
-    // (1).Î±Ö±½ÓÑ°Ö·
+    // (1).ä¼ªç›´æ¥å¯»å€
     wire [27:0] direct_jump_addr;
     Shift_Left_2 #28 sl2_2 (.x({2'b00, instruction[25:0]}), .y(direct_jump_addr));
 
-    // (2).JumpĞÅºÅ¿ØÖÆµÄÑ¡ÔñÆ÷£¬Ñ¡ÔñÏÂÒ»ÌõÖ¸ÁîµØÖ·µÄÀ´Ô´
+    // (2).Jumpä¿¡å·æ§åˆ¶çš„é€‰æ‹©å™¨ï¼Œé€‰æ‹©ä¸‹ä¸€æ¡æŒ‡ä»¤åœ°å€çš„æ¥æº
     Mux2 #32 jump_or_other (.d0(temp_addr), .d1({PC_increment_addr[31:28], direct_jump_addr}), .sel(Jump), .y(next_instruction_addr));
 
 endmodule
