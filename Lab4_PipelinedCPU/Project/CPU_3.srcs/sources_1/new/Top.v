@@ -2,17 +2,17 @@
 
 module Top(
 	/*
-		Ä£¿éÃû³Æ£ºTop
-		Ä£¿é¹¦ÄÜ£º¶¥²ãÄ£¿é£¬Á¬½Ó MIPS ÈíºËÓëÄÚ´æ
-		ÊäÈë¶Ë¿Ú£º
-			clk						Ê±ÖÓĞÅºÅ
-			rst						¸´Î»ĞÅºÅ¡£1-Õı³£¹¤×÷£¬0-¸´Î»
+		æ¨¡å—åç§°ï¼šTop
+		æ¨¡å—åŠŸèƒ½ï¼šé¡¶å±‚æ¨¡å—ï¼Œè¿æ¥ MIPS è½¯æ ¸ä¸å†…å­˜
+		è¾“å…¥ç«¯å£ï¼š
+			clk						æ—¶é’Ÿä¿¡å·
+			rst						å¤ä½ä¿¡å·ã€‚1-æ­£å¸¸å·¥ä½œï¼Œ0-å¤ä½
 
-		Êä³ö¶Ë¿Ú£º
-			ALU_result				Data Memory µÄÊäÈë£ºALU µÄÔËËã½á¹û£¬¼´Ä¿±êµØÖ·
-			write_data_memory		Data Memory µÄÊäÈë£ºĞ´ÈëÄÚ´æµÄÊı¾İ
-			MemWrite				Data Memory µÄÊäÈë£ºĞ´¿ØÖÆĞÅºÅ
-			£¨ÉùÃ÷ÎªÊä³ö¶Ë¿ÚÊÇÎªÁË·ÂÕæĞèÒª£©
+		è¾“å‡ºç«¯å£ï¼š
+			ALU_result				Data Memory çš„è¾“å…¥ï¼šALU çš„è¿ç®—ç»“æœï¼Œå³ç›®æ ‡åœ°å€
+			write_data_memory		Data Memory çš„è¾“å…¥ï¼šå†™å…¥å†…å­˜çš„æ•°æ®
+			MemWrite				Data Memory çš„è¾“å…¥ï¼šå†™æ§åˆ¶ä¿¡å·
+			ï¼ˆå£°æ˜ä¸ºè¾“å‡ºç«¯å£æ˜¯ä¸ºäº†ä»¿çœŸéœ€è¦ï¼‰
 	*/
 
 	input 					clk,
@@ -23,15 +23,16 @@ module Top(
 	output 					MemWrite
     );
 
-	/*
-		ÄÚ´æ I/O ¶Ë¿ÚĞÅºÅÉùÃ÷£º
-			curr_inst_addr			Instruction Memory µÄÊäÈë£ºPC
-			inst_en					Instruction Memory µÄÊäÈë£ºPC µØÖ·ÊÇ·ñÓĞĞ§
-			inst					Instruction Memory µÄÊä³ö£º´ÓÄÚ´æÖĞ¶Á³öµÄÖ¸Áî
 	
-			MemRead					Data Memory µÄÊäÈë£º¶Á¿ØÖÆĞÅºÅ
-			£¨²¢Î´ÓÃµ½£¬ÒòÎª single-port-RAM µÄ ena ĞÅºÅ²¢²»ÊÇ¶Á¿ØÖÆĞÅºÅ£¬¶øÊÇÕû¸öµÄÊ¹ÄÜĞÅºÅ£©
-			read_data_memory		Data Memory µÄÊä³ö£º´ÓÄÚ´æÖĞ¶Á³öµÄÊı¾İ
+	/*
+		å†…å­˜ I/O ç«¯å£ä¿¡å·å£°æ˜ï¼š
+			curr_inst_addr			Instruction Memory çš„è¾“å…¥ï¼šPC
+			inst_en					Instruction Memory çš„è¾“å…¥ï¼šPC åœ°å€æ˜¯å¦æœ‰æ•ˆ
+			inst					Instruction Memory çš„è¾“å‡ºï¼šä»å†…å­˜ä¸­è¯»å‡ºçš„æŒ‡ä»¤
+	
+			MemRead					Data Memory çš„è¾“å…¥ï¼šè¯»æ§åˆ¶ä¿¡å·
+			ï¼ˆå¹¶æœªç”¨åˆ°ï¼Œå› ä¸º single-port-RAM çš„ ena ä¿¡å·å¹¶ä¸æ˜¯è¯»æ§åˆ¶ä¿¡å·ï¼Œè€Œæ˜¯æ•´ä¸ªçš„ä½¿èƒ½ä¿¡å·ï¼‰
+			read_data_memory		Data Memory çš„è¾“å‡ºï¼šä»å†…å­˜ä¸­è¯»å‡ºçš„æ•°æ®
 	*/
 
 	wire 		[31:0] 		curr_inst_addr;
@@ -41,6 +42,7 @@ module Top(
 	wire 					MemRead;
 	wire 		[31:0] 		read_data_memory;
 
+	
 	MIPS 					mips
 	(
 		.clk(clk), .rst(rst),
