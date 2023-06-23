@@ -46,7 +46,7 @@ module Datapath(
             MemRead_MEM                 Data Memory 的输入：读控制信号
     */
 
-	input                   clk,
+    input                   clk,
     input                   rst,
 
     // 内存的输出
@@ -59,12 +59,12 @@ module Datapath(
 
     // EX 阶段需要的控制信号
     input                   RegDst_EX,
-	input                   ALUSrc_EX,
+    input                   ALUSrc_EX,
     input       [2:0]       ALUControl_EX,
 
     // WB 阶段需要的控制信号
-	input                   MemtoReg_WB,
-	input                   RegWrite_WB,
+    input                   MemtoReg_WB,
+    input                   RegWrite_WB,
 
     // 用于解决冒险的控制信号
     input                   Branch_ID, 
@@ -84,7 +84,7 @@ module Datapath(
 
     // Data Memory 的输入
     output      [31:0]      ALU_result_MEM,
-	output      [31:0]      write_data_memory_MEM,
+    output      [31:0]      write_data_memory_MEM,
     output                  MemWrite_MEM,
     output                  MemRead_MEM
     );
@@ -230,7 +230,7 @@ module Datapath(
     assign Rd_ID = inst_ID[15:11];
     assign jump_addr = {PC_incre_addr_ID[31:28], inst_ID[25:0], 2'b00};
 
-    General_Regfile             rf
+    General_Regfile         rf
     (
         .clk(clk),
         .read_reg1(Rs_ID), .read_reg2(Rt_ID), 
@@ -238,85 +238,85 @@ module Datapath(
         .read_data1(read_data1_reg_ID), .read_data2(read_data2_reg_ID)
     );
 
-    Sign_Extension              se 
+    Sign_Extension          se 
     (
         .x(inst_ID[15:0]), .y(se_const_ID)
     );
 
-    Shift_Left_2    #32         sl2
+    Shift_Left_2    #32     sl2
     (
         .x(se_const_ID), .y(relative_branch_addr)
     );
 
-    Adder2          #32         cal_branch_addr
+    Adder2          #32     cal_branch_addr
     (
         .a(PC_incre_addr_ID - 32'h4), .b(relative_branch_addr), .c(branch_addr)  // -4 是为了对冲掉开头的影响
     );
 
-    Mux2            #32         branch_or_PC_increment 
+    Mux2            #32     branch_or_PC_increment 
     (
         .d0(PC_incre_addr_ID), .d1(branch_addr), 
         .sel(PCSrc_ID), 
         .y(temp_addr)
     );
 
-    Mux2            #32         jump_or_other 
+    Mux2            #32     jump_or_other 
     (
         .d0(temp_addr), .d1(jump_addr), 
         .sel(Jump_ID), 
         .y(next_inst_addr)
     );
 
-    Mux2            #32         Forward_fst_operand_from_ID 
+    Mux2            #32     Forward_fst_operand_from_ID 
     (
         .d0(read_data1_reg_ID), .d1(ALU_result_MEM), 
         .sel(Forward_fst_operand_ID), 
         .y(is_equal_fst_operand)
     );
 
-    Mux2            #32         Forward_sec_operand_from_ID 
+    Mux2            #32     Forward_sec_operand_from_ID 
     (
         .d0(read_data2_reg_ID), .d1(ALU_result_MEM), 
         .sel(Forward_sec_operand_ID), 
         .y(is_equal_sec_operand)
     );
     
-    Is_Equal        #32         ie 
+    Is_Equal        #32     ie 
     (
         .a(is_equal_fst_operand), .b(is_equal_sec_operand), .y(Equal_ID)
     );
 
-    Flop_rc         #5          Rs_ID_reg 
+    Flop_rc         #5      Rs_ID_reg 
     (
         .clk(clk), .rst(rst), .clear(~flush_EX), 
         .din(Rs_ID), .dout(Rs_EX)
     );
 
-    Flop_rc         #5          Rt_ID_reg 
+    Flop_rc         #5      Rt_ID_reg 
     (
         .clk(clk), .rst(rst), .clear(~flush_EX), 
         .din(Rt_ID), .dout(Rt_EX)
     );
 
-    Flop_rc         #5          Rd_ID_reg 
+    Flop_rc         #5      Rd_ID_reg 
     (
         .clk(clk), .rst(rst), .clear(~flush_EX), 
         .din(Rd_ID), .dout(Rd_EX)
     );
 
-    Flop_rc         #32         read_data1_reg_ID_reg 
+    Flop_rc         #32     read_data1_reg_ID_reg 
     (
         .clk(clk), .rst(rst), .clear(~flush_EX), 
         .din(read_data1_reg_ID), .dout(read_data1_reg_EX)
     );
 
-    Flop_rc         #32         read_data2_reg_ID_reg 
+    Flop_rc         #32     read_data2_reg_ID_reg 
     (
         .clk(clk), .rst(rst), .clear(~flush_EX), 
         .din(read_data2_reg_ID), .dout(read_data2_reg_EX)
     );
 
-    Flop_rc         #32         se_const_ID_reg 
+    Flop_rc         #32     se_const_ID_reg 
     (
         .clk(clk), .rst(rst), .clear(~flush_EX), 
         .din(se_const_ID), .dout(se_const_EX)
