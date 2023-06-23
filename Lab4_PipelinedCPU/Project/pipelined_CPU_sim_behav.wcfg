@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="pipelined_CPU_sim_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="pipelined_CPU_sim" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="935629000fs"></ZoomStartTime>
+      <ZoomEndTime time="2586188105fs"></ZoomEndTime>
+      <Cursor1Time time="0fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="306"></NameColumnWidth>
+      <ValueColumnWidth column_width="102"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="22" />
+   <wvobject fp_name="/pipelined_CPU_sim/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/next_inst_addr" type="array">
+      <obj_property name="ElementShortName">next_inst_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">next_inst_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/curr_inst_addr" type="array">
+      <obj_property name="ElementShortName">curr_inst_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">curr_inst_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/inst" type="array">
+      <obj_property name="ElementShortName">inst[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/RegWrite_WB" type="logic">
+      <obj_property name="ElementShortName">RegWrite_WB</obj_property>
+      <obj_property name="ObjectShortName">RegWrite_WB</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/read_data1_reg_ID" type="array">
+      <obj_property name="ElementShortName">read_data1_reg_ID[31:0]</obj_property>
+      <obj_property name="ObjectShortName">read_data1_reg_ID[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/read_data2_reg_ID" type="array">
+      <obj_property name="ElementShortName">read_data2_reg_ID[31:0]</obj_property>
+      <obj_property name="ObjectShortName">read_data2_reg_ID[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/write_data_reg_WB" type="array">
+      <obj_property name="ElementShortName">write_data_reg_WB[31:0]</obj_property>
+      <obj_property name="ObjectShortName">write_data_reg_WB[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MemRead" type="logic">
+      <obj_property name="ElementShortName">MemRead</obj_property>
+      <obj_property name="ObjectShortName">MemRead</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/MemWrite" type="logic">
+      <obj_property name="ElementShortName">MemWrite</obj_property>
+      <obj_property name="ObjectShortName">MemWrite</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/read_data_memory" type="array">
+      <obj_property name="ElementShortName">read_data_memory[31:0]</obj_property>
+      <obj_property name="ObjectShortName">read_data_memory[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/write_data_memory" type="array">
+      <obj_property name="ElementShortName">write_data_memory[31:0]</obj_property>
+      <obj_property name="ObjectShortName">write_data_memory[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/hzd/stall_IF" type="logic">
+      <obj_property name="ElementShortName">stall_IF</obj_property>
+      <obj_property name="ObjectShortName">stall_IF</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/hzd/stall_ID" type="logic">
+      <obj_property name="ElementShortName">stall_ID</obj_property>
+      <obj_property name="ObjectShortName">stall_ID</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/hzd/flush_EX" type="logic">
+      <obj_property name="ElementShortName">flush_EX</obj_property>
+      <obj_property name="ObjectShortName">flush_EX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/ALU_fst_operand" type="array">
+      <obj_property name="ElementShortName">ALU_fst_operand[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ALU_fst_operand[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/ALU_sec_operand" type="array">
+      <obj_property name="ElementShortName">ALU_sec_operand[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ALU_sec_operand[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ALU_result" type="array">
+      <obj_property name="ElementShortName">ALU_result[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ALU_result[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/write_data_memory_from_reg_MEM" type="array">
+      <obj_property name="ElementShortName">write_data_memory_from_reg_MEM[31:0]</obj_property>
+      <obj_property name="ObjectShortName">write_data_memory_from_reg_MEM[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/write_data_reg_WB" type="array">
+      <obj_property name="ElementShortName">write_data_reg_WB[31:0]</obj_property>
+      <obj_property name="ObjectShortName">write_data_reg_WB[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/pipelined_CPU_sim/ty/MIPS/dp/Forward_write_data_memory_MEM" type="logic">
+      <obj_property name="ElementShortName">Forward_write_data_memory_MEM</obj_property>
+      <obj_property name="ObjectShortName">Forward_write_data_memory_MEM</obj_property>
+   </wvobject>
+</wave_config>
