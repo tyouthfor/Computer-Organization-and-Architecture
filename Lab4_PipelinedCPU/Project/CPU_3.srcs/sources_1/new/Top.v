@@ -5,8 +5,8 @@ module Top(
 		模块名称：Top
 		模块功能：顶层模块，连接 MIPS 软核与内存
 		输入端口：
-			clk
-			rst
+			clk						时钟信号
+			rst						复位信号。1-正常工作，0-复位
 
 		输出端口：
 			ALU_result				Data Memory 的输入：ALU 的运算结果，即目标地址
