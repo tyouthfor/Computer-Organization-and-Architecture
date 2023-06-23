@@ -2,18 +2,18 @@
 
 module General_Regfile(
 	/*
-		Ä£¿éÃû³Æ£ºGeneral_Regfile
-		Ä£¿é¹¦ÄÜ£ºMIPS µÄ 32 ¸ö 32-bit Í¨ÓÃ¼Ä´æÆ÷
-		ÊäÈë¶Ë¿Ú£º
-			clk				Ê±ÖÓĞÅºÅ
-			read_reg1 		¶Á¼Ä´æÆ÷ºÅ 1
-			read_reg2 		¶Á¼Ä´æÆ÷ºÅ 2
-			write_reg 		Ğ´¼Ä´æÆ÷ºÅ
-			write_data 		Ğ´Êı¾İ
-			RegWrite 		Ğ´¿ØÖÆĞÅºÅ
-		Êä³ö¶Ë¿Ú£º
-			read_data1 		´Ó¼Ä´æÆ÷ 1 ÖĞ¶Á³öµÄÊı¾İ
-			read_data2 		´Ó¼Ä´æÆ÷ 2 ÖĞ¶Á³öµÄÊı¾İ
+		æ¨¡å—åç§°ï¼šGeneral_Regfile
+		æ¨¡å—åŠŸèƒ½ï¼šMIPS çš„ 32 ä¸ª 32-bit é€šç”¨å¯„å­˜å™¨
+		è¾“å…¥ç«¯å£ï¼š
+			clk				æ—¶é’Ÿä¿¡å·
+			read_reg1 		è¯»å¯„å­˜å™¨å· 1
+			read_reg2 		è¯»å¯„å­˜å™¨å· 2
+			write_reg 		å†™å¯„å­˜å™¨å·
+			write_data 		å†™æ•°æ®
+			RegWrite 		å†™æ§åˆ¶ä¿¡å·
+		è¾“å‡ºç«¯å£ï¼š
+			read_data1 		ä»å¯„å­˜å™¨ 1 ä¸­è¯»å‡ºçš„æ•°æ®
+			read_data2 		ä»å¯„å­˜å™¨ 2 ä¸­è¯»å‡ºçš„æ•°æ®
 	*/
 
 	input 					clk,
@@ -28,19 +28,17 @@ module General_Regfile(
 	);
 
 
-	// ¼Ä´æÆ÷¶Ñ
+	// å¯„å­˜å™¨å †
 	reg 		[31:0] 		rf[31:0];
 
-
-	// Ğ´Êı¾İ
-	always @ (negedge clk) begin  // ÏÂ½µÑØ´¥·¢ÊÇÎªÁË´í¿ª£¨Í¬ PC£©
+	// å†™æ•°æ®
+	always @ (negedge clk) begin  // ä¸‹é™æ²¿è§¦å‘æ˜¯ä¸ºäº†é”™å¼€ï¼ˆåŒ PCï¼‰
 		if (RegWrite) begin
 			rf[write_reg] <= write_data;
 		end
 	end
 
-
-	// ¶ÁÊı¾İ
+	// è¯»æ•°æ®
 	assign read_data1 = (read_reg1 != 0) ? rf[read_reg1] : 0;
 	assign read_data2 = (read_reg2 != 0) ? rf[read_reg2] : 0;
 
