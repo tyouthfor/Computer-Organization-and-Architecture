@@ -1,73 +1,69 @@
 `timescale 1ns / 1ps
 
-//*********************************************************
-//                Ä£¿éÃû³Æ£ºHazard
-//                Ä£¿é¹¦ÄÜ£ºÃ°ÏÕ¼ì²â¼°´¦Àí
-//*********************************************************
 module Hazard(
     /*
-        Ä£¿éÃû³Æ£ºHazard
-        Ä£¿é¹¦ÄÜ£ºÃ°ÏÕ¼ì²â¼°´¦Àí
-        ÊäÈë¶Ë¿Ú£º
-            // ID ½×¶Î
+        æ¨¡å—åç§°ï¼šHazard
+        æ¨¡å—åŠŸèƒ½ï¼šå†’é™©æ£€æµ‹åŠå¤„ç†
+        è¾“å…¥ç«¯å£ï¼š
+            // ID é˜¶æ®µ
             Rs_ID
             Rt_ID
             Branch_ID
 
-            // EX ½×¶Î
+            // EX é˜¶æ®µ
             Rs_EX
             Rt_EX
             write_reg_EX
             MemtoReg_EX
             RegWrite_EX
 
-            // MEM ½×¶Î
+            // MEM é˜¶æ®µ
             Rt_MEM
             write_reg_MEM
             MemtoReg_MEM
             RegWrite_MEM
             MemWrite_MEM
 
-            // WB ½×¶Î
+            // WB é˜¶æ®µ
             write_reg_WB
             RegWrite_WB
 
-        Êä³ö¶Ë¿Ú£º
-            Forward_fst_operand_EX          ¿ØÖÆ ALU µÚÒ»²Ù×÷ÊıÀ´Ô´µÄÑ¡ÔñÆ÷µÄ sel ĞÅºÅ
-            Forward_sec_operand_EX          ¿ØÖÆ ALU µÚ¶ş²Ù×÷ÊıÀ´Ô´µÄÑ¡ÔñÆ÷µÄ sel ĞÅºÅ
-            Forward_fst_operand_ID          ¿ØÖÆÅĞ¶ÏÁ½ÊıÊÇ·ñÏàµÈÊ±£¨branch£©µÄµÚÒ»²Ù×÷ÊıÀ´Ô´µÄÑ¡ÔñÆ÷µÄ sel ĞÅºÅ
-            Forward_sec_operand_ID          ¿ØÖÆÅĞ¶ÏÁ½ÊıÊÇ·ñÏàµÈÊ±£¨branch£©µÄµÚ¶ş²Ù×÷ÊıÀ´Ô´µÄÑ¡ÔñÆ÷µÄ sel ĞÅºÅ
-            Forward_write_data_memory_MEM   ¿ØÖÆĞ´ÈëÄÚ´æµÄÊı¾İÀ´Ô´µÄÑ¡ÔñÆ÷µÄ sel ĞÅºÅ
+        è¾“å‡ºç«¯å£ï¼š
+            Forward_fst_operand_EX          æ§åˆ¶ ALU ç¬¬ä¸€æ“ä½œæ•°æ¥æºçš„é€‰æ‹©å™¨çš„ sel ä¿¡å·
+            Forward_sec_operand_EX          æ§åˆ¶ ALU ç¬¬äºŒæ“ä½œæ•°æ¥æºçš„é€‰æ‹©å™¨çš„ sel ä¿¡å·
+            Forward_fst_operand_ID          æ§åˆ¶åˆ¤æ–­ä¸¤æ•°æ˜¯å¦ç›¸ç­‰æ—¶ï¼ˆbranchï¼‰çš„ç¬¬ä¸€æ“ä½œæ•°æ¥æºçš„é€‰æ‹©å™¨çš„ sel ä¿¡å·
+            Forward_sec_operand_ID          æ§åˆ¶åˆ¤æ–­ä¸¤æ•°æ˜¯å¦ç›¸ç­‰æ—¶ï¼ˆbranchï¼‰çš„ç¬¬äºŒæ“ä½œæ•°æ¥æºçš„é€‰æ‹©å™¨çš„ sel ä¿¡å·
+            Forward_write_data_memory_MEM   æ§åˆ¶å†™å…¥å†…å­˜çš„æ•°æ®æ¥æºçš„é€‰æ‹©å™¨çš„ sel ä¿¡å·
 
-            stall_IF                        PC ×èÈûĞÅºÅ
-            stall_ID                        IF/ID ¼¶Á÷Ë®×èÈûĞÅºÅ
-            flush_EX                        ID/EX ¼¶Á÷Ë®³åË¢ĞÅºÅ
+            stall_IF                        PC é˜»å¡ä¿¡å·
+            stall_ID                        IF/ID çº§æµæ°´é˜»å¡ä¿¡å·
+            flush_EX                        ID/EX çº§æµæ°´å†²åˆ·ä¿¡å·
     */
 
-    // ID ½×¶Î
+    // ID é˜¶æ®µ
     input       [4:0]       Rs_ID,
     input       [4:0]       Rt_ID,
     input                   Branch_ID,
 
-    // EX ½×¶Î
+    // EX é˜¶æ®µ
     input       [4:0]       Rs_EX,
     input       [4:0]       Rt_EX,
     input       [4:0]       write_reg_EX,
     input                   MemtoReg_EX,
     input                   RegWrite_EX,
 
-    // MEM ½×¶Î
+    // MEM é˜¶æ®µ
     input       [4:0]       Rt_MEM,
     input       [4:0]       write_reg_MEM,
     input                   MemtoReg_MEM,
     input                   RegWrite_MEM,
     input                   MemWrite_MEM,
 
-    // WB ½×¶Î
+    // WB é˜¶æ®µ
     input       [4:0]       write_reg_WB,
     input                   RegWrite_WB,
 
-    // Í¨¹ı Forwarding ½â¾ö RAW Ã°ÏÕ
+    // é€šè¿‡ Forwarding è§£å†³ RAW å†’é™©
     output      reg     [1:0]       Forward_fst_operand_EX,
     output      reg     [1:0]       Forward_sec_operand_EX,
 
@@ -76,41 +72,41 @@ module Hazard(
 
     output                  Forward_write_data_memory_MEM,
 
-    // Í¨¹ı Stall ½â¾ö RAW Ã°ÏÕ
+    // é€šè¿‡ Stall è§£å†³ RAW å†’é™©
     output                  stall_IF,
     output                  stall_ID,
     output                  flush_EX
     );
 
 
-    // Stall Ïà¹ØĞÅºÅ
+    // Stall ç›¸å…³ä¿¡å·
 	wire                    lw_stall_ID;
     wire                    branch_stall_ID;
 
 
-    // 1.Í¨¹ı Forwarding ½â¾ö EX ½×¶Î ALU ²Ù×÷ÊıµÄ RAW Ã°ÏÕ
-        // (1).From "ALU_result_MEM" at the end of EX stage£¨in MEM stage£©
-            // e.g Ö¸ÁîĞòÁĞÎª add£¬add
-            // e.g Ö¸ÁîĞòÁĞÎª add£¬lw/sw
-        // (2).From "write_data_reg_WB" at the end of MEM stage£¨in WB stage£©
-            // e.g Ö¸ÁîĞòÁĞÎª add£¬x£¬add
-            // e.g Ö¸ÁîĞòÁĞÎª lw£¬x£¬add
+    // 1.é€šè¿‡ Forwarding è§£å†³ EX é˜¶æ®µ ALU æ“ä½œæ•°çš„ RAW å†’é™©
+        // (1).From "ALU_result_MEM" at the end of EX stageï¼ˆin MEM stageï¼‰
+            // e.g æŒ‡ä»¤åºåˆ—ä¸º addï¼Œadd
+            // e.g æŒ‡ä»¤åºåˆ—ä¸º addï¼Œlw/sw
+        // (2).From "write_data_reg_WB" at the end of MEM stageï¼ˆin WB stageï¼‰
+            // e.g æŒ‡ä»¤åºåˆ—ä¸º addï¼Œxï¼Œadd
+            // e.g æŒ‡ä»¤åºåˆ—ä¸º lwï¼Œxï¼Œadd
     always @ (*) begin
 
-        // µÚÒ»²Ù×÷Êı
+        // ç¬¬ä¸€æ“ä½œæ•°
         if (Rs_EX != 0) begin
 
-            // ¶Á¼Ä´æÆ÷ºÅ Rs_EX µÈÓÚĞ´¼Ä´æÆ÷ºÅ write_reg_MEM£¬ÇÒ RegWrite_MEM ĞÅºÅÎª 1£¨µÚÒ»ÖÖÇé¿ö£©
+            // è¯»å¯„å­˜å™¨å· Rs_EX ç­‰äºå†™å¯„å­˜å™¨å· write_reg_MEMï¼Œä¸” RegWrite_MEM ä¿¡å·ä¸º 1ï¼ˆç¬¬ä¸€ç§æƒ…å†µï¼‰
             if (Rs_EX == write_reg_MEM & RegWrite_MEM) begin
                 Forward_fst_operand_EX = 2'b10;  // ALU_result_MEM
             end
 
-            // ¶Á¼Ä´æÆ÷ºÅ Rs_EX µÈÓÚĞ´¼Ä´æÆ÷ºÅ write_reg_WB£¬ÇÒ RegWrite_WB ĞÅºÅÎª 1£¨µÚ¶şÖÖÇé¿ö£©
+            // è¯»å¯„å­˜å™¨å· Rs_EX ç­‰äºå†™å¯„å­˜å™¨å· write_reg_WBï¼Œä¸” RegWrite_WB ä¿¡å·ä¸º 1ï¼ˆç¬¬äºŒç§æƒ…å†µï¼‰
             else if (Rs_EX == write_reg_WB & RegWrite_WB) begin
                 Forward_fst_operand_EX = 2'b01;  // write_data_reg_WB
             end
 
-            // ÎŞÃ°ÏÕ
+            // æ— å†’é™©
             else begin
                 Forward_fst_operand_EX = 2'b00;
             end
@@ -120,20 +116,20 @@ module Hazard(
             Forward_fst_operand_EX = 2'b00;
         end
 
-        // µÚ¶ş²Ù×÷Êı
+        // ç¬¬äºŒæ“ä½œæ•°
         if (Rt_EX != 0) begin
 
-            // ¶Á¼Ä´æÆ÷ºÅ Rt_EX µÈÓÚĞ´¼Ä´æÆ÷ºÅ write_reg_MEM£¬ÇÒ RegWrite_MEM ĞÅºÅÎª 1£¨µÚÒ»ÖÖÇé¿ö£©
+            // è¯»å¯„å­˜å™¨å· Rt_EX ç­‰äºå†™å¯„å­˜å™¨å· write_reg_MEMï¼Œä¸” RegWrite_MEM ä¿¡å·ä¸º 1ï¼ˆç¬¬ä¸€ç§æƒ…å†µï¼‰
             if (Rt_EX == write_reg_MEM & RegWrite_MEM) begin
                 Forward_sec_operand_EX = 2'b10;  // ALU_result_MEM
             end
 
-            // ¶Á¼Ä´æÆ÷ºÅ Rt_EX µÈÓÚĞ´¼Ä´æÆ÷ºÅ write_reg_WB£¬ÇÒ RegWrite_WB ĞÅºÅÎª 1£¨µÚ¶şÖÖÇé¿ö£©
+            // è¯»å¯„å­˜å™¨å· Rt_EX ç­‰äºå†™å¯„å­˜å™¨å· write_reg_WBï¼Œä¸” RegWrite_WB ä¿¡å·ä¸º 1ï¼ˆç¬¬äºŒç§æƒ…å†µï¼‰
             else if (Rt_EX == write_reg_WB & RegWrite_WB) begin
                 Forward_sec_operand_EX = 2'b01;  // write_data_reg_WB
             end
 
-            // ÎŞÃ°ÏÕ
+            // æ— å†’é™©
             else begin
                 Forward_sec_operand_EX = 2'b00;
             end
@@ -145,44 +141,44 @@ module Hazard(
     end
 
 
-    // 2.Í¨¹ı Stall ½â¾ö EX ½×¶Î ALU ²Ù×÷ÊıµÄ RAW Ã°ÏÕ£¨ÔÚ ID ½×¶Î¼ì²â£©
-        // e.g Ö¸ÁîĞòÁĞÎª lw, add
+    // 2.é€šè¿‡ Stall è§£å†³ EX é˜¶æ®µ ALU æ“ä½œæ•°çš„ RAW å†’é™©ï¼ˆåœ¨ ID é˜¶æ®µæ£€æµ‹ï¼‰
+        // e.g æŒ‡ä»¤åºåˆ—ä¸º lw, add
     
-    // ¶Á¼Ä´æÆ÷ºÅ Rs_ID/Rt_ID µÈÓÚĞ´¼Ä´æÆ÷ºÅ Rt_EX £¬ÇÒ MemtoReg_EX ĞÅºÅÎª 1£¨lw£©
+    // è¯»å¯„å­˜å™¨å· Rs_ID/Rt_ID ç­‰äºå†™å¯„å­˜å™¨å· Rt_EX ï¼Œä¸” MemtoReg_EX ä¿¡å·ä¸º 1ï¼ˆlwï¼‰
     assign lw_stall_ID = (Rs_ID == Rt_EX | Rt_ID == Rt_EX) & MemtoReg_EX;
     assign stall_IF = lw_stall_ID | branch_stall_ID;
     assign stall_ID = stall_IF;
     assign flush_EX = stall_ID;
 
 
-    // 3.Í¨¹ı Forwarding ½â¾ö ID ½×¶ÎÅĞ¶ÏÁ½ÊıÊÇ·ñÏàµÈÊ±µÄ RAW Ã°ÏÕ
-        // (1).From "ALU_result_MEM" at the end of EX state£¨in MEM stage£©
-            // e.g Ö¸ÁîĞòÁĞÎª add£¬x£¬beq
-        // (2).Ã»ÓĞ´Ó WB µ½ ID µÄÊı¾İÍ¨Â·£¬ÒòÎª±¾À´ WB ¾ÍÒªĞ´»Ø¼Ä´æÆ÷¶ÑµÄÂï
-            // e.g Ö¸ÁîĞòÁĞÎª lw£¬x£¬x£¬beq ²»»áÔì³ÉÃ°ÏÕ
+    // 3.é€šè¿‡ Forwarding è§£å†³ ID é˜¶æ®µåˆ¤æ–­ä¸¤æ•°æ˜¯å¦ç›¸ç­‰æ—¶çš„ RAW å†’é™©
+        // (1).From "ALU_result_MEM" at the end of EX stateï¼ˆin MEM stageï¼‰
+            // e.g æŒ‡ä»¤åºåˆ—ä¸º addï¼Œxï¼Œbeq
+        // (2).æ²¡æœ‰ä» WB åˆ° ID çš„æ•°æ®é€šè·¯ï¼Œå› ä¸ºæœ¬æ¥ WB å°±è¦å†™å›å¯„å­˜å™¨å †çš„å˜›
+            // e.g æŒ‡ä»¤åºåˆ—ä¸º lwï¼Œxï¼Œxï¼Œbeq ä¸ä¼šé€ æˆå†’é™©
 
-    // ¶Á¼Ä´æÆ÷ºÅ Rs_ID/Rt_ID µÈÓÚĞ´¼Ä´æÆ÷ºÅ write_reg_MEM£¬ÇÒ RegWrite_MEM ĞÅºÅÎª 1
+    // è¯»å¯„å­˜å™¨å· Rs_ID/Rt_ID ç­‰äºå†™å¯„å­˜å™¨å· write_reg_MEMï¼Œä¸” RegWrite_MEM ä¿¡å·ä¸º 1
     assign Forward_fst_operand_ID = (Rs_ID != 0 & Rs_ID == write_reg_MEM & RegWrite_MEM);
     assign Forward_sec_operand_ID = (Rt_ID != 0 & Rt_ID == write_reg_MEM & RegWrite_MEM);
 
 
-    // 4.Í¨¹ı Stall ½â¾ö ID ½×¶ÎÅĞ¶ÏÁ½ÊıÊÇ·ñÏàµÈÊ±µÄ RAW Ã°ÏÕ£¨ÔÚ ID ½×¶Î¼ì²â£©
-        // e.g Ö¸ÁîĞòÁĞÎª add£¬beq
-        // e.g Ö¸ÁîĞòÁĞÎª lw£¬x£¬beq
-    assign branch_stall_ID = Branch_ID &  // Branch_ID Îª 1
+    // 4.é€šè¿‡ Stall è§£å†³ ID é˜¶æ®µåˆ¤æ–­ä¸¤æ•°æ˜¯å¦ç›¸ç­‰æ—¶çš„ RAW å†’é™©ï¼ˆåœ¨ ID é˜¶æ®µæ£€æµ‹ï¼‰
+        // e.g æŒ‡ä»¤åºåˆ—ä¸º addï¼Œbeq
+        // e.g æŒ‡ä»¤åºåˆ—ä¸º lwï¼Œxï¼Œbeq
+    assign branch_stall_ID = Branch_ID &  // Branch_ID ä¸º 1
 
-                            // ¶Á¼Ä´æÆ÷ºÅ Rs_ID/Rt_ID µÈÓÚĞ´¼Ä´æÆ÷ºÅ write_reg_EX£¬ÇÒ RegWrite_EX ĞÅºÅÎª 1£¨µÚÒ»ÖÖÇé¿ö£©
+                            // è¯»å¯„å­˜å™¨å· Rs_ID/Rt_ID ç­‰äºå†™å¯„å­˜å™¨å· write_reg_EXï¼Œä¸” RegWrite_EX ä¿¡å·ä¸º 1ï¼ˆç¬¬ä¸€ç§æƒ…å†µï¼‰
                             (RegWrite_EX & (write_reg_EX == Rs_ID | write_reg_EX == Rt_ID) |
 
-                            // ¶Á¼Ä´æÆ÷ºÅ Rs_ID/Rt_ID µÈÓÚĞ´¼Ä´æÆ÷ºÅ write_reg_MEM£¬ÇÒ MemtoReg_MEM ĞÅºÅÎª 1£¨µÚ¶şÖÖÇé¿ö£©
+                            // è¯»å¯„å­˜å™¨å· Rs_ID/Rt_ID ç­‰äºå†™å¯„å­˜å™¨å· write_reg_MEMï¼Œä¸” MemtoReg_MEM ä¿¡å·ä¸º 1ï¼ˆç¬¬äºŒç§æƒ…å†µï¼‰
                             MemtoReg_MEM & (write_reg_MEM == Rs_ID | write_reg_MEM == Rt_ID));
 
 
-    // 5.Í¨¹ı Forwarding ½â¾ö MEM ½×¶ÎĞ´ÄÚ´æµÄ RAW Ã°ÏÕ
-        // From "write_data_reg_WB" at the end of MEM stage£¨in WB stage£©
-        // e.g Ö¸ÁîĞòÁĞÎª add£¬sw
+    // 5.é€šè¿‡ Forwarding è§£å†³ MEM é˜¶æ®µå†™å†…å­˜çš„ RAW å†’é™©
+        // From "write_data_reg_WB" at the end of MEM stageï¼ˆin WB stageï¼‰
+        // e.g æŒ‡ä»¤åºåˆ—ä¸º addï¼Œsw
     
-    // Ğ´ÈëÄÚ´æµÄÊı¾İÀ´Ô´ Rt_MEM µÈÓÚĞ´¼Ä´æÆ÷ºÅ write_reg_WB£¬ÇÒ MemWrite_MEM Îª 1
+    // å†™å…¥å†…å­˜çš„æ•°æ®æ¥æº Rt_MEM ç­‰äºå†™å¯„å­˜å™¨å· write_reg_WBï¼Œä¸” MemWrite_MEM ä¸º 1
     assign Forward_write_data_memory_MEM = (Rt_MEM != 0 & Rt_MEM == write_reg_WB & MemWrite_MEM);
 
 endmodule
