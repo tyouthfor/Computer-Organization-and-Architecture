@@ -2,36 +2,36 @@
 
 module Controller(
     /*
-        Ä£¿éÃû³Æ£ºController
-        Ä£¿é¹¦ÄÜ£ºÁ÷Ë®Ïß MIPS ´¦ÀíÆ÷µÄ¿ØÖÆµ¥Ôª
-        ÊäÈë¶Ë¿Ú£º
-            clk                 Ê±ÖÓĞÅºÅ
-            rst                 ¸´Î»ĞÅºÅ¡£1-Õı³£¹¤×÷£¬0-¸´Î»
+        æ¨¡å—åç§°ï¼šController
+        æ¨¡å—åŠŸèƒ½ï¼šæµæ°´çº¿ MIPS å¤„ç†å™¨çš„æ§åˆ¶å•å…ƒ
+        è¾“å…¥ç«¯å£ï¼š
+            clk                 æ—¶é’Ÿä¿¡å·
+            rst                 å¤ä½ä¿¡å·ã€‚1-æ­£å¸¸å·¥ä½œï¼Œ0-å¤ä½
             op                  inst[31:26]
             funct               inst[5:0]
-            Equal_ID            Á½ÊıÏàµÈÊ±ÖÃ 1£¬ÓÃÓÚÈ·¶¨ PCSrc
-            flush_EX            ID/EX ¼¶Á÷Ë®³åË¢ĞÅºÅ
+            Equal_ID            ä¸¤æ•°ç›¸ç­‰æ—¶ç½® 1ï¼Œç”¨äºç¡®å®š PCSrc
+            flush_EX            ID/EX çº§æµæ°´å†²åˆ·ä¿¡å·
 
-        Êä³ö¶Ë¿Ú£º
-            // ID ½×¶ÎÊä³öµÄ¿ØÖÆĞÅºÅ
+        è¾“å‡ºç«¯å£ï¼š
+            // ID é˜¶æ®µè¾“å‡ºçš„æ§åˆ¶ä¿¡å·
             Branch_ID
             Jump_ID
             PCSrc_ID
 
-            // EX ½×¶ÎÊä³öµÄ¿ØÖÆĞÅºÅ
+            // EX é˜¶æ®µè¾“å‡ºçš„æ§åˆ¶ä¿¡å·
             RegDst_EX
             ALUSrc_EX
             MemtoReg_EX
             RegWrite_EX
             ALUControl_EX
 
-            // MEM ½×¶ÎÊä³öµÄ¿ØÖÆĞÅºÅ
+            // MEM é˜¶æ®µè¾“å‡ºçš„æ§åˆ¶ä¿¡å·
             MemtoReg_MEM
             MemRead_MEM
             MemWrite_MEM
             RegWrite_MEM
 
-            // WB ½×¶ÎÊä³öµÄ¿ØÖÆĞÅºÅ
+            // WB é˜¶æ®µè¾“å‡ºçš„æ§åˆ¶ä¿¡å·
             MemtoReg_WB
             RegWrite_WB
     */
@@ -43,31 +43,31 @@ module Controller(
     input                   Equal_ID,
     input                   flush_EX,
 
-    // ID ½×¶ÎÊä³öµÄ¿ØÖÆĞÅºÅ
+    // ID é˜¶æ®µè¾“å‡ºçš„æ§åˆ¶ä¿¡å·
     output                  Branch_ID,
     output                  Jump_ID,
     output                  PCSrc_ID,
     
-    // EX ½×¶ÎÊä³öµÄ¿ØÖÆĞÅºÅ
+    // EX é˜¶æ®µè¾“å‡ºçš„æ§åˆ¶ä¿¡å·
     output                  RegDst_EX, 
     output                  ALUSrc_EX,
     output                  MemtoReg_EX,
     output                  RegWrite_EX,
     output      [2:0]       ALUControl_EX,
 
-    // MEM ½×¶ÎÊä³öµÄ¿ØÖÆĞÅºÅ
+    // MEM é˜¶æ®µè¾“å‡ºçš„æ§åˆ¶ä¿¡å·
     output                  MemtoReg_MEM,
     output                  MemRead_MEM,
     output                  MemWrite_MEM,
     output                  RegWrite_MEM,
 
-    // WB ½×¶ÎÊä³öµÄ¿ØÖÆĞÅºÅ
+    // WB é˜¶æ®µè¾“å‡ºçš„æ§åˆ¶ä¿¡å·
     output                  MemtoReg_WB,
     output                  RegWrite_WB
     );
 
 
-    // Controller ²úÉúµÄ²¢Î´Êä³öµÄ¿ØÖÆĞÅºÅ
+    // Controller äº§ç”Ÿçš„å¹¶æœªè¾“å‡ºçš„æ§åˆ¶ä¿¡å·
     wire                    RegDst_ID;
     wire                    ALUSrc_ID;
     wire                    MemtoReg_ID;
@@ -80,6 +80,7 @@ module Controller(
     wire                    MemWrite_EX;
 
     wire        [1:0]       ALUOp;
+
 
     assign PCSrc_ID = Branch_ID & Equal_ID;
 
