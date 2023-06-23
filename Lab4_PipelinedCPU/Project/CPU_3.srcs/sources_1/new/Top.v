@@ -15,8 +15,8 @@ module Top(
 			（声明为输出端口是为了仿真需要）
 	*/
 
-	input clk,
-	input rst,
+	input 					clk,
+	input 					rst,
 	
 	output 		[31:0] 		ALU_result,
 	output 		[31:0] 		write_data_memory,
@@ -34,14 +34,14 @@ module Top(
 			read_data_memory		Data Memory 的输出：从内存中读出的数据
 	*/
 
-	wire 	[31:0] 		curr_inst_addr;
-	wire 				inst_en;
-	wire 				[31:0] inst;
+	wire 		[31:0] 		curr_inst_addr;
+	wire 					inst_en;
+	wire 		[31:0] 		inst;
 	
-	wire 				MemRead;
-	wire 	[31:0] 		read_data_memory;
+	wire 					MemRead;
+	wire 		[31:0] 		read_data_memory;
 
-	MIPS 				mips
+	MIPS 					mips
 	(
 		.clk(clk), .rst(rst),
 
@@ -55,14 +55,14 @@ module Top(
 		.read_data_memory(read_data_memory)
 	);
 	
-	instruction_memory 	IM  // single-port-ROM
+	instruction_memory 		IM  // single-port-ROM
 	(
 		.clka(clk), .ena(inst_en), 
 		.addra(curr_inst_addr), 
 		.douta(inst)
 	);
 	
-	data_memory 		DM  // single-port-RAM
+	data_memory 			DM  // single-port-RAM
 	(
 		.clka(clk), .ena(1'b1), .wea({4{MemWrite}}), 
 		.addra(ALU_result), .dina(write_data_memory), 
