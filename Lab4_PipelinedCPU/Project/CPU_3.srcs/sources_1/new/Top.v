@@ -36,10 +36,10 @@ module Top(
 
 	wire 	[31:0] 		curr_inst_addr;
 	wire 				inst_en;
-    wire 				[31:0] inst;
+	wire 				[31:0] inst;
 	
-    wire 				MemRead;
-    wire 	[31:0] 		read_data_memory;
+	wire 				MemRead;
+	wire 	[31:0] 		read_data_memory;
 
 	MIPS 				mips
 	(
